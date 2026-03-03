@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sessions — IDOR Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+  <div class="app-layout">
+    <main class="main-content" id="mainContent">
+      <div class="page-wrapper">
+
+        <!-- Page Header -->
+        <div class="page-header flex justify-between items-center flex-wrap gap-3">
+          <div>
+            <h1>Scan Sessions</h1>
+            <p>Batch scans grouped by import (Swagger, Raw HTTP)</p>
+          </div>
+          <div class="flex gap-3">
+            <button class="btn btn-ghost btn-sm" id="refreshBtn">Refresh</button>
+          </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="stats-grid">
+          <div class="stat-card stat-card-accent">
+            <span class="stat-card-label">Total Sessions</span>
+            <span class="stat-card-value" id="sumTotal">—</span>
+          </div>
+          <div class="stat-card stat-card-warning">
+            <span class="stat-card-label">Running</span>
+            <span class="stat-card-value" id="sumRunning">—</span>
+          </div>
+          <div class="stat-card stat-card-success">
+            <span class="stat-card-label">Completed</span>
+            <span class="stat-card-value" id="sumCompleted">—</span>
+          </div>
+          <div class="stat-card stat-card-danger">
+            <span class="stat-card-label">Failed</span>
+            <span class="stat-card-value" id="sumFailed">—</span>
+          </div>
+        </div>
+
+        <!-- Filter & Table -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">All Sessions</span>
+            <div class="filter-bar">
+              <select class="filter-select" id="filterStatus">
+                <option value="">All Status</option>
+                <option value="DRAFT">Draft</option>
+                <option value="RUNNING">Running</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="FAILED">Failed</option>
+              </select>
+              <select class="filter-select" id="filterLimit">
+                <option value="10">10 / page</option>
+                <option value="25">25 / page</option>
+                <option value="50">50 / page</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Loading / Empty state -->
+          <div class="table-state" id="tableState">
+            <div class="spinner"></div>
+            <p>Loading sessions…</p>
+          </div>
+
+          <!-- Table -->
+          <div class="table-wrapper hidden" id="tableWrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name / Base URL</th>
+                  <th>Status</th>
+                  <th>Progress</th>
+                  <th style="text-align:center">Endpoints</th>
+                  <th>Created</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="sessionsBody"></tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination" id="pagination"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div class="modal-overlay hidden" id="deleteOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Delete Session</span>
+        <button class="btn btn-icon" id="deleteModalClose">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>This will permanently delete the session and all its child scans and findings.</p>
+        <p class="text-muted text-sm mt-2" id="deleteSessionName"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost btn-sm" id="deleteCancelBtn">Cancel</button>
+        <button class="btn btn-danger btn-sm" id="deleteConfirmBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/sessions.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Findings — IDOR Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+  <div class="app-layout">
+    <main class="main-content" id="mainContent">
+      <div class="page-wrapper">
+
+        <!-- Page Header -->
+        <div class="page-header flex justify-between items-center flex-wrap gap-3">
+          <div>
+            <h1>Findings</h1>
+            <p>Detected IDOR vulnerabilities with AI analysis</p>
+          </div>
+          <div class="flex gap-2">
+            <div class="export-dropdown">
+              <button class="btn btn-ghost btn-sm" id="exportBtn">Export ▾</button>
+              <div class="export-menu" id="exportMenu">
+                <button class="export-menu-item" data-format="json">Export JSON</button>
+                <button class="export-menu-item" data-format="markdown">Export Markdown</button>
+              </div>
+            </div>
+            <button class="btn btn-ghost btn-sm" id="refreshBtn">Refresh</button>
+          </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="stats-grid">
+          <div class="stat-card stat-card-danger">
+            <span class="stat-card-label">Critical</span>
+            <span class="stat-card-value" id="sumCritical">—</span>
+          </div>
+          <div class="stat-card stat-card-warning">
+            <span class="stat-card-label">High</span>
+            <span class="stat-card-value" id="sumHigh">—</span>
+          </div>
+          <div class="stat-card stat-card-cyan">
+            <span class="stat-card-label">Medium</span>
+            <span class="stat-card-value" id="sumMedium">—</span>
+          </div>
+          <div class="stat-card stat-card-info">
+            <span class="stat-card-label">Open</span>
+            <span class="stat-card-value" id="sumOpen">—</span>
+          </div>
+        </div>
+
+        <!-- Filters & Table -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">All Findings</span>
+            <div class="filter-bar">
+              <select class="filter-select" id="filterSeverity">
+                <option value="">All Severity</option>
+                <option value="CRITICAL">Critical</option>
+                <option value="HIGH">High</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="LOW">Low</option>
+                <option value="INFO">Info</option>
+              </select>
+              <select class="filter-select" id="filterStatus">
+                <option value="">All Status</option>
+                <option value="OPEN">Open</option>
+                <option value="FALSE_POSITIVE">False Positive</option>
+                <option value="FIXED">Fixed</option>
+              </select>
+              <select class="filter-select" id="filterLimit">
+                <option value="10">10 / page</option>
+                <option value="25">25 / page</option>
+                <option value="50">50 / page</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Loading / Empty -->
+          <div class="table-state" id="tableState">
+            <div class="spinner"></div>
+            <p>Loading findings…</p>
+          </div>
+
+          <!-- Table -->
+          <div class="table-wrapper hidden" id="tableWrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Severity</th>
+                  <th>Endpoint</th>
+                  <th>Reasoning</th>
+                  <th>Status</th>
+                  <th>Detected</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="findingsBody"></tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination" id="pagination"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Drawer Overlay -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <!-- Detail Drawer -->
+  <div class="drawer" id="drawer" role="dialog" aria-label="Finding detail">
+    <div class="drawer-header">
+      <span class="drawer-title" id="drawerTitle">Finding Detail</span>
+      <button class="drawer-close" id="drawerClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </div>
+
+  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/findings.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+//--- Enums ---
+enum ApiType {
+  REST
+  GRAPHQL
+}
+
+enum HeuristicStatus {
+  CLEAN
+  SUSPICIOUS
+  ERROR
+}
+
+enum Severity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+  INFO
+}
+
+enum FindingStatus {
+  OPEN
+  FALSE_POSITIVE
+  FIXED
+}
+
+enum SessionStatus {
+  DRAFT      // Created, waiting for mapping/auth
+  RUNNING    // Child scans are executing
+  COMPLETED  // All scans finished
+  FAILED     // System error during execution
+}
+
+//--- Models --- 
+model ScanSession {
+  id                String        @id @default(uuid()) @db.Uuid
+  name              String?
+
+  // Base URL from spec (e.g. https://api.example.com)
+  base_url          String
+
+  // Parsed operations extracted from Swagger/other spec
+  // [{ method, path, parameters, requestBody }]
+  parsed_endpoints  Json
+
+  // User-supplied variable substitution map: { "userId": "36" }
+  global_mapping    Json?
+
+  // Auth for the whole session (encrypted, set at run time)
+  account_a_auth    String?
+  account_b_auth    String?
+
+  status            SessionStatus @default(DRAFT)
+  total_endpoints   Int           @default(0)
+  scanned_endpoints Int           @default(0)
+
+  scans             Scan[]
+
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+
+  @@map("scan_sessions")
+}
+
+model Scan {
+  id                String          @id @default(uuid()) @db.Uuid
+  target_url        String
+  http_method       String
+  api_type          ApiType
+  graphql_operation String?
+  request_payload   Json
+  account_a_auth    Json
+  account_b_auth    Json
+  heuristic_status  HeuristicStatus
+  diff_evidence     Json?
+  created_at        DateTime        @default(now())
+
+  // Optional parent session (null = standalone scan from cURL/manual)
+  session_id        String?         @db.Uuid
+  session           ScanSession?    @relation(fields: [session_id], references: [id], onDelete: SetNull)
+
+  // Relation (1 Scan can have 0 or many Findings)
+  findings          Finding[]
+
+  @@map("scans") 
+}
+
+model Finding {
+  id                String        @id @default(uuid()) @db.Uuid
+  scan_id           String        @db.Uuid
+  scan              Scan          @relation(fields: [scan_id], references: [id], onDelete: Cascade)
+  
+  severity          Severity
+  affected_endpoint String
+  llm_reasoning     String        @db.Text
+  repro_steps       String        @db.Text
+  suggested_fix     String        @db.Text
+  finding_status    FindingStatus @default(OPEN)
+  llm_meta          Json?         // { provider, model, latencyMs, retries }
+  
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+
+  @@map("findings")
+}

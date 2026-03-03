@@ -1,0 +1,23 @@
+{
+    "name": "idor-hunter",
+    "private": true,
+    "type": "module",
+    "workspaces": [
+        "client",
+        "server"
+    ],
+    "scripts": {
+        "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+        "dev:server": "npm --prefix server run dev",
+        "dev:client": "npm --prefix client run dev",
+        "test": "npm --prefix server run test",
+        "test:watch": "npm --prefix server run test:watch"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "concurrently": "^9.2.1",
+        "eslint": "^10.0.2",
+        "globals": "^17.4.0",
+        "jest": "^30.2.0"
+    }
+}

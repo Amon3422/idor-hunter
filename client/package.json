@@ -1,0 +1,14 @@
+{
+    "name": "idor-hunter-client",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "main": "server.js",
+    "scripts": {
+        "dev": "nodemon src/server.js",
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "http-proxy-middleware": "^3.0.5"
+    }
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finding Detail — IDOR Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+  <div class="app-layout">
+    <main class="main-content" id="mainContent">
+      <div class="page-wrapper">
+
+        <!-- Back link -->
+        <a href="/findings.html" class="btn btn-ghost btn-sm mb-6" style="display:inline-flex">&larr; Back to Findings</a>
+
+        <!-- Loading state -->
+        <div id="loadingState" class="table-state" style="min-height:300px">
+          <div class="spinner"></div>
+          <p>Loading finding…</p>
+        </div>
+
+        <!-- Main content (hidden until loaded) -->
+        <div id="mainContentArea" class="hidden">
+
+          <!-- Header -->
+          <div class="detail-header">
+            <h1 id="headerTitle"></h1>
+            <p class="text-muted text-sm" id="headerSubtitle"></p>
+            <div class="detail-badges" id="headerBadges"></div>
+            <div class="detail-actions mt-3">
+              <button class="btn btn-ghost btn-sm" id="exportJsonBtn">Export JSON</button>
+              <button class="btn btn-ghost btn-sm" id="exportMdBtn">Export Markdown</button>
+            </div>
+          </div>
+
+          <!-- Meta strip -->
+          <div class="meta-strip" id="metaStrip"></div>
+
+          <!-- Two-column detail -->
+          <div class="detail-grid">
+
+            <!-- Left: AI Reasoning -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <span class="detail-card-title">AI Reasoning</span>
+              </div>
+              <div class="detail-card-body">
+                <p class="prose" id="llmReasoning"></p>
+              </div>
+            </div>
+
+            <!-- Right: Heuristic Evidence -->
+            <div class="detail-card" id="diffEvidenceCard">
+              <div class="detail-card-header">
+                <span class="detail-card-title">Heuristic Evidence</span>
+              </div>
+              <div class="detail-card-body" id="diffEvidence"></div>
+            </div>
+
+          </div>
+
+          <div class="detail-grid mt-6">
+
+            <!-- Reproduction Steps -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <span class="detail-card-title">Reproduction Steps</span>
+                <button class="copy-btn" data-copy-target="reproSteps">Copy</button>
+              </div>
+              <div class="detail-card-body" id="reproSteps"></div>
+            </div>
+
+            <!-- Suggested Fix -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <span class="detail-card-title">Suggested Fix</span>
+                <button class="copy-btn" data-copy-target="suggestedFix">Copy</button>
+              </div>
+              <div class="detail-card-body" id="suggestedFix"></div>
+            </div>
+
+          </div>
+
+          <!-- Status Update -->
+          <div class="card mt-6">
+            <div class="card-header">
+              <span class="card-title">Analyst Status</span>
+            </div>
+            <div class="card-body">
+              <div class="status-select-row">
+                <select class="form-select" id="statusSelect" style="max-width:200px">
+                  <option value="OPEN">Open</option>
+                  <option value="FALSE_POSITIVE">False Positive</option>
+                  <option value="FIXED">Fixed</option>
+                </select>
+                <button class="btn btn-primary btn-sm" id="saveStatusBtn">Save Status</button>
+              </div>
+              <div class="status-message hidden" id="statusMessage"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/finding-detail.js"></script>
+</body>
+</html>

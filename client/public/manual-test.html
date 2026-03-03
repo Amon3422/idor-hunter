@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual Test — IDOR Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+  <div class="app-layout">
+    <main class="main-content" id="mainContent">
+      <div class="page-wrapper">
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <h1>Manual IDOR Test</h1>
+          <p>Configure two accounts and test an endpoint for broken access control</p>
+        </div>
+
+        <form id="idorForm" autocomplete="off">
+          <div class="form-card mb-6">
+
+            <!-- Endpoint Config -->
+            <div class="form-card-title">Endpoint Configuration</div>
+            <div class="form-grid mb-6">
+              <div class="form-group">
+                <label class="form-label" for="url">Target URL</label>
+                <input type="url" id="url" class="form-input" placeholder="https://api.example.com/users/123" required>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="method">HTTP Method</label>
+                  <select id="method" class="form-select">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="PATCH">PATCH</option>
+                    <option value="DELETE">DELETE</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="apiType">API Type</label>
+                  <select id="apiType" class="form-select">
+                    <option value="REST">REST</option>
+                    <option value="GRAPHQL">GraphQL</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mb-6">
+              <label class="form-label" for="body">Request Body <span class="text-muted">(JSON, optional)</span></label>
+              <textarea id="body" class="form-textarea form-textarea-mono" rows="3" placeholder='{"query": "...", "variables": {}}'></textarea>
+            </div>
+
+            <!-- Account A -->
+            <div class="form-grid mb-6">
+              <div class="account-section">
+                <div class="account-section-title">
+                  <span class="dot dot-blue"></span>
+                  Account A (Victim / Resource Owner)
+                </div>
+                <div class="form-group mb-4">
+                  <label class="form-label" for="headersA">Headers</label>
+                  <textarea id="headersA" class="form-textarea form-textarea-mono" rows="3" placeholder="Authorization: Bearer eyJ...&#10;Cookie: session=abc123"></textarea>
+                  <span class="form-hint">One per line: Header-Name: value</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cookiesA">Cookies</label>
+                  <input type="text" id="cookiesA" class="form-input" placeholder="session=abc123; token=xyz">
+                </div>
+              </div>
+
+              <!-- Account B -->
+              <div class="account-section">
+                <div class="account-section-title">
+                  <span class="dot dot-orange"></span>
+                  Account B (Attacker / Unauthorized)
+                </div>
+                <div class="form-group mb-4">
+                  <label class="form-label" for="headersB">Headers</label>
+                  <textarea id="headersB" class="form-textarea form-textarea-mono" rows="3" placeholder="Authorization: Bearer eyK...&#10;Cookie: session=def456"></textarea>
+                  <span class="form-hint">One per line: Header-Name: value</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cookiesB">Cookies</label>
+                  <input type="text" id="cookiesB" class="form-input" placeholder="session=def456; token=uvw">
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">Run IDOR Test</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Results -->
+        <div class="result-container" id="resultContainer">
+          <pre id="resultContent" style="white-space:pre-wrap;font-family:var(--font-sans);font-size:.88rem;color:var(--text-secondary);line-height:1.7;margin:0"></pre>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/manual-test.js"></script>
+</body>
+</html>

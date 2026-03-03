@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scans — IDOR Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+  <div class="app-layout">
+    <main class="main-content" id="mainContent">
+      <div class="page-wrapper">
+
+        <!-- Page Header -->
+        <div class="page-header flex justify-between items-center flex-wrap gap-3">
+          <div>
+            <h1>Scan History</h1>
+            <p>All IDOR scans with results and actions</p>
+          </div>
+          <div class="flex gap-3">
+            <a href="/manual-test.html" class="btn btn-primary btn-sm">+ New Scan</a>
+            <button class="btn btn-ghost btn-sm" id="refreshBtn">Refresh</button>
+          </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="stats-grid">
+          <div class="stat-card stat-card-accent">
+            <span class="stat-card-label">Total Scans</span>
+            <span class="stat-card-value" id="sumTotal">—</span>
+          </div>
+          <div class="stat-card stat-card-danger">
+            <span class="stat-card-label">Suspicious</span>
+            <span class="stat-card-value" id="sumSuspicious">—</span>
+          </div>
+          <div class="stat-card stat-card-success">
+            <span class="stat-card-label">Clean</span>
+            <span class="stat-card-value" id="sumClean">—</span>
+          </div>
+          <div class="stat-card stat-card-warning">
+            <span class="stat-card-label">Findings</span>
+            <span class="stat-card-value" id="sumFindings">—</span>
+          </div>
+        </div>
+
+        <!-- Filters & Table -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Scans</span>
+            <div class="filter-bar">
+              <select class="filter-select" id="filterStatus">
+                <option value="">All Status</option>
+                <option value="SUSPICIOUS">Suspicious</option>
+                <option value="CLEAN">Clean</option>
+                <option value="PENDING">Pending</option>
+              </select>
+              <select class="filter-select" id="filterLimit">
+                <option value="10">10 / page</option>
+                <option value="25">25 / page</option>
+                <option value="50">50 / page</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Loading / Empty state -->
+          <div class="table-state" id="tableState">
+            <div class="spinner"></div>
+            <p>Loading scans…</p>
+          </div>
+
+          <!-- Table -->
+          <div class="table-wrapper hidden" id="tableWrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Endpoint</th>
+                  <th>Method</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th style="text-align:center">Findings</th>
+                  <th style="text-align:center">Score</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="scansBody"></tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination" id="pagination"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/scans.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Session Detail — IDOR Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+  <div class="app-layout">
+    <main class="main-content" id="mainContent">
+      <div class="page-wrapper">
+
+        <!-- Back -->
+        <a href="/sessions.html" class="btn btn-ghost btn-sm mb-6" style="display:inline-flex">&larr; Back to Sessions</a>
+
+        <!-- Loading state -->
+        <div id="loadingState" class="table-state" style="min-height:300px">
+          <div class="spinner"></div>
+          <p>Loading session…</p>
+        </div>
+
+        <!-- Main content -->
+        <div id="mainContentArea" class="hidden">
+
+          <!-- Header -->
+          <div class="detail-header">
+            <h1 id="headerTitle"></h1>
+            <p class="text-muted text-sm" id="headerSubtitle"></p>
+            <div class="detail-badges mt-2" id="headerBadges"></div>
+          </div>
+
+          <!-- Progress bar (visible while RUNNING) -->
+          <div id="progressSection" class="card mt-4 hidden">
+            <div class="card-body" style="padding:1.25rem">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-sm font-medium">Scan Progress</span>
+                <span class="text-sm text-muted" id="progressLabel">0 / 0</span>
+              </div>
+              <div style="background:var(--border);border-radius:999px;height:8px;overflow:hidden">
+                <div id="progressBar" style="height:100%;background:var(--accent);border-radius:999px;transition:width 0.4s ease;width:0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Run Form (DRAFT only) -->
+          <div id="runSection" class="card mt-4 hidden">
+            <div class="card-header">
+              <span class="card-title">Run Session</span>
+            </div>
+            <div class="card-body" style="padding:1.25rem">
+
+              <!-- Variable Mapping Table -->
+              <div id="mappingSection" class="hidden mb-6">
+                <div class="form-card-title mb-3">Variable Mapping</div>
+                <p class="text-muted text-sm mb-3">Fill in values for path variables detected in the endpoints. E.g. <code>{userId}</code> → <code>36</code></p>
+                <div id="mappingTable"></div>
+              </div>
+
+              <div class="form-grid mb-4">
+                <div class="form-group">
+                  <label class="form-label">Account A Headers <span class="text-danger">*</span></label>
+                  <textarea id="accountAHeaders" class="form-textarea form-textarea-mono" rows="4"
+                    placeholder="Authorization: Bearer eyJ...&#10;Cookie: session=owner_token"></textarea>
+                  <span class="form-hint">One per line: Header-Name: value</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Account A Cookies <span class="text-muted">(optional)</span></label>
+                  <textarea id="accountACookies" class="form-textarea form-textarea-mono" rows="4"
+                    placeholder="session=owner_token; csrf=abc"></textarea>
+                </div>
+              </div>
+
+              <div class="form-grid mb-6">
+                <div class="form-group">
+                  <label class="form-label">Account B Headers <span class="text-danger">*</span></label>
+                  <textarea id="accountBHeaders" class="form-textarea form-textarea-mono" rows="4"
+                    placeholder="Authorization: Bearer eyK...&#10;Cookie: session=attacker_token"></textarea>
+                  <span class="form-hint">One per line: Header-Name: value</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Account B Cookies <span class="text-muted">(optional)</span></label>
+                  <textarea id="accountBCookies" class="form-textarea form-textarea-mono" rows="4"
+                    placeholder="session=attacker_token; csrf=xyz"></textarea>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" id="runBtn">▶ Run Session</button>
+              </div>
+              <div class="result-message mt-3" id="runMessage"></div>
+            </div>
+          </div>
+
+          <!-- Child Scans Table -->
+          <div class="card mt-6">
+            <div class="card-header">
+              <span class="card-title">Scans</span>
+              <span class="text-muted text-sm" id="scansSubtitle"></span>
+            </div>
+
+            <div class="table-state hidden" id="scansState">
+              <p>No scans yet. Run the session to start scanning.</p>
+            </div>
+
+            <div class="table-wrapper hidden" id="scansWrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th style="text-align:center">Score</th>
+                    <th style="text-align:center">Findings</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="scansBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/session-detail.js"></script>
+</body>
+</html>

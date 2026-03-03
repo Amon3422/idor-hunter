@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — IDOR Hunter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+  <div class="app-layout">
+
+    <!-- Sidebar (injected by nav.js) -->
+
+    <main class="main-content" id="mainContent">
+      <div class="page-wrapper">
+
+        <!-- Hero -->
+        <section class="hero">
+          <h1>Detect IDOR vulnerabilities<br>before attackers do.</h1>
+          <p>Automated two-account differential testing with heuristic scoring and AI-powered analysis.</p>
+          <div class="quick-actions">
+            <a href="/manual-test.html" class="btn btn-primary btn-lg">New Manual Test</a>
+            <a href="/curl-import.html" class="btn btn-ghost btn-lg">Import cURL</a>
+          </div>
+        </section>
+
+        <!-- Live Stats -->
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card stat-card-accent">
+            <span class="stat-card-label">Total Scans</span>
+            <span class="stat-card-value" id="totalScans">—</span>
+          </div>
+          <div class="stat-card stat-card-danger">
+            <span class="stat-card-label">Findings</span>
+            <span class="stat-card-value" id="totalFindings">—</span>
+          </div>
+          <div class="stat-card stat-card-warning">
+            <span class="stat-card-label">Critical</span>
+            <span class="stat-card-value" id="criticalFindings">—</span>
+          </div>
+          <div class="stat-card stat-card-cyan">
+            <span class="stat-card-label">Open Issues</span>
+            <span class="stat-card-value" id="openFindings">—</span>
+          </div>
+          <div class="stat-card stat-card-info">
+            <span class="stat-card-label">Sessions</span>
+            <span class="stat-card-value" id="totalSessions">—</span>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <section class="mb-6">
+          <h2 class="page-header" style="margin-bottom:var(--sp-5)"><span style="font-size:1.15rem;font-weight:700">Capabilities</span></h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">🧪</div>
+              <h3>Manual Testing</h3>
+              <p>Configure two accounts, specify endpoints, and run differential tests to detect unauthorized access.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📊</div>
+              <h3>Heuristic Scoring</h3>
+              <p>Response diffs are scored across status codes, body sizes, JSON keys, and values on a 0–100 scale.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🤖</div>
+              <h3>AI Analysis</h3>
+              <p>Suspicious diffs are sent to an LLM for deep reasoning, exploitation steps, and fix recommendations.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📋</div>
+              <h3>cURL Import</h3>
+              <p>Paste cURL commands from DevTools to instantly parse endpoints and configure scan parameters.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📜</div>
+              <h3>Scan History</h3>
+              <p>Full audit trail of every scan with results, scores, and drill-down into individual findings.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔐</div>
+              <h3>Encrypted Storage</h3>
+              <p>Credentials are encrypted with AES-256-GCM at rest and never stored in plaintext.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/assets/js/nav.js"></script>
+  <script src="/assets/js/index.js"></script>
+</body>
+</html>

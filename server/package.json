@@ -1,0 +1,29 @@
+{
+    "name": "idor-hunter-server",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "main": "server.js",
+    "scripts": {
+        "dev": "nodemon server.js",
+        "start": "node server.js",
+        "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+        "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch"
+    },
+    "dependencies": {
+        "@apidevtools/swagger-parser": "^12.1.0",
+        "@prisma/adapter-pg": "^7.4.2",
+        "@prisma/client": "^7.4.2",
+        "axios": "^1.13.6",
+        "curl-to-json-parser": "^0.1.2",
+        "dotenv": "^17.3.1",
+        "express": "^5.2.1",
+        "helmet": "^8.1.0",
+        "openai": "^6.25.0"
+    },
+    "devDependencies": {
+        "@types/node": "^25.3.3",
+        "nodemon": "^3.1.14",
+        "prisma": "^7.4.2"
+    }
+}
